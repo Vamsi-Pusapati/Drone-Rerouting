@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arculus Controller</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>Arculus Controller</h1>
+    <button id="start-button">Demonstrate GPS Spoofing Attack</button>
+    <button id="stop-button">Stop Drone</button>
+    <div id="log-container" style="border: 1px solid black; padding: 10px; margin-top: 20px; height: 300px; overflow-y: scroll;">
+        <h3>Logs:</h3>
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        const socket = io();
+
+        document.getElementById("start-button").addEventListener("click", () => {
+            socket.emit("start_drone");
+        });
+
+        document.getElementById("stop-button").addEventListener("click", () => {
+            socket.emit("stop_drone");
+        });
+
+        socket.on("log", (data) => {
+            const logEntry = document.createElement("p");
+            logEntry.textContent = data.message;
+            document.getElementById("logs").appendChild(logEntry);
+            document.getElementById("log-container").scrollTop = document.getElementById("log-container").scrollHeight;
+        });
+    </script>
+</body>
+</html>
